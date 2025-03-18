@@ -18,15 +18,17 @@ public class ContainerFluid : Container, IHazardNotifier
         base.UnloadCargo();
     }
 
-    public override void LoadCargo(double massToLoad)
+    public override void LoadCargo(LoadProduct cargo)
     {
+        var massToLoad = cargo.TotalMass;
+
         var reasonableCap = IsWithUnsafeCargo() ? maximumCapacity * 0.5 : maximumCapacity * 0.9;
         if (cargoMass + massToLoad > reasonableCap)
         {
             Notify(GetSerialNumber());
         }
 
-        base.LoadCargo(massToLoad);
+        base.LoadCargo(cargo);
     }
 
     public bool IsWithUnsafeCargo()

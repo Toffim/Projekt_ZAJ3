@@ -18,10 +18,9 @@ public class ContainerCooling : Container, IHazardNotifier
         base.UnloadCargo();
     }
 
-    // TO-DO change: double -> instance of LoadProduct
-    public override void LoadCargo(double massToLoad)
+    public override void LoadCargo(LoadProduct cargo)
     {
-        base.LoadCargo(massToLoad);
+        base.LoadCargo(cargo);
     }
 
     public double GetTemperature()

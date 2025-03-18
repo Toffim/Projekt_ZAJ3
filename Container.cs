@@ -24,8 +24,10 @@ public class Container
         SetCargoMass(0);
     }
 
-    public virtual void LoadCargo(double massToLoad)
+    public virtual void LoadCargo(LoadProduct cargo)
     {
+        var massToLoad = cargo.TotalMass;
+
         if ((cargoMass + massToLoad) > maximumCapacity)
         {
             throw new OverfillException("Maximum capacity of cargo exceeded.");

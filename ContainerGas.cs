@@ -18,9 +18,9 @@ public class ContainerGas : Container, IHazardNotifier
         cargoMass = (0.05 * cargoMass);
     }
 
-    public override void LoadCargo(double massToLoad)
+    public override void LoadCargo(LoadProduct cargo)
     {
-        base.LoadCargo(massToLoad);
+        base.LoadCargo(cargo);
     }
 
     public double GetAirPressure()
