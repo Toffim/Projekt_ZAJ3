@@ -2,10 +2,10 @@
 
 public class Container
 {
-    private Container(int cargoMass, int massContainer, int height, int depth, int maximumCapacity)
+    public Container(double cargoMass, double containerMass, int height, int depth, double maximumCapacity)
     {
         this.cargoMass = cargoMass;
-        this.massContainer = massContainer;
+        this.containerMass = containerMass;
         this.height = height;
         this.depth = depth;
         this.maximumCapacity = maximumCapacity;
@@ -19,36 +19,41 @@ public class Container
         lastCargoIndex++;
     }
 
-    public void UnloadCargo()
+    public virtual void UnloadCargo()
     {
         SetCargoMass(0);
     }
 
-    public void LoadCargo(int cargoMass)
+    public virtual void LoadCargo(double massToLoad)
     {
-        cargoMass = cargoMass;
-    }
-
-    public void SetCargoMass(int cargoMass)
-    {
-        if (cargoMass > maximumCapacity)
+        if ((cargoMass + massToLoad) > maximumCapacity)
         {
             throw new OverfillException("Maximum capacity of cargo exceeded.");
         }
+        SetCargoMass(cargoMass + massToLoad);
+    }
+
+    public void SetCargoMass(double cargoMass)
+    {
         cargoMass = cargoMass;
     }
 
-    public int GetCargoMass()
+    public double GetCargoMass()
     {
         return cargoMass;
     }
-// Vars
-    private static int lastCargoIndex = 1;
-    private string serialNumber;
 
-    public int cargoMass;
-    private int massContainer;
-    private int height;
-    private int depth;
-    private int maximumCapacity;
+    public string GetSerialNumber()
+    {
+        return serialNumber;
+    }
+// Vars
+    public static int lastCargoIndex = 1;
+    protected string serialNumber;
+
+    protected double cargoMass;
+    protected double containerMass;
+    protected int height;
+    protected int depth;
+    protected double maximumCapacity;
 }
