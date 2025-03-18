@@ -9,7 +9,7 @@ public class ContainerFluid : Container, IHazardNotifier
 
     protected override void GenerateSerialNumber()
     {
-        serialNumber = "KON-" + "C-" + lastCargoIndex.ToString();
+        serialNumber = "KON-" + "F-" + lastCargoIndex.ToString();
         Container.lastCargoIndex++;
     }
 
@@ -18,15 +18,15 @@ public class ContainerFluid : Container, IHazardNotifier
         base.UnloadCargo();
     }
 
-    public override void LoadCargo(double cargoMass)
+    public override void LoadCargo(double massToLoad)
     {
         var reasonableCap = IsWithUnsafeCargo() ? maximumCapacity * 0.5 : maximumCapacity * 0.9;
-        if (cargoMass > reasonableCap)
+        if (cargoMass + massToLoad > reasonableCap)
         {
             Notify(GetSerialNumber());
         }
 
-        base.UnloadCargo();
+        base.LoadCargo(massToLoad);
     }
 
     public bool IsWithUnsafeCargo()

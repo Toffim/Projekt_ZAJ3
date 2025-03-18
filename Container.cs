@@ -15,7 +15,7 @@ public class Container
 
     protected virtual void GenerateSerialNumber()
     {
-        serialNumber = "KON-" + "B-" + lastCargoIndex.ToString();
+        serialNumber = "KON-" + "N-" + lastCargoIndex.ToString();
         lastCargoIndex++;
     }
 
