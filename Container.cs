@@ -2,9 +2,8 @@
 
 public class Container
 {
-    public Container(double cargoMass, double containerMass, int height, int depth, double maximumCapacity)
+    public Container(double containerMass, int height, int depth, double maximumCapacity)
     {
-        this.cargoMass = cargoMass;
         this.containerMass = containerMass;
         this.height = height;
         this.depth = depth;
@@ -21,28 +20,41 @@ public class Container
 
     public virtual void UnloadCargo()
     {
-        SetCargoMass(0);
+        cargo = null;
     }
 
-    public virtual void LoadCargo(LoadProduct cargo)
+    public virtual void LoadCargo(LoadProduct? cargoToLoad)
     {
-        var massToLoad = cargo.TotalMass;
+        if (cargoToLoad == null)
+            return;
 
-        if ((cargoMass + massToLoad) > maximumCapacity)
+        if (cargo != null && cargo.TypeName != cargoToLoad.TypeName)
+        {
+            Console.WriteLine("Canot load cargo of different types into the container.");
+            return;
+        }
+
+        // Cargo is null -> initialize it.
+        cargo ??= cargoToLoad;
+
+        var massToLoad = cargoToLoad.TotalMass;
+
+        if ((cargo.TotalMass + massToLoad) > maximumCapacity)
         {
             throw new OverfillException("Maximum capacity of cargo exceeded.");
         }
-        SetCargoMass(cargoMass + massToLoad);
+
+        SetCargoMass(cargo.TotalMass + massToLoad);
     }
 
     public void SetCargoMass(double cargoMass)
     {
-        cargoMass = cargoMass;
+        cargo.TotalMass = cargoMass;
     }
 
     public double GetCargoMass()
     {
-        return cargoMass;
+        return cargo.TotalMass;
     }
 
     public string GetSerialNumber()
@@ -53,7 +65,7 @@ public class Container
     public static int lastCargoIndex = 1;
     protected string serialNumber;
 
-    protected double cargoMass;
+    protected LoadProduct? cargo;
     protected double containerMass;
     protected int height;
     protected int depth;

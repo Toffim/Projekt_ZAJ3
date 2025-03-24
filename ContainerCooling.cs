@@ -2,7 +2,7 @@
 
 public class ContainerCooling : Container, IHazardNotifier
 {
-    public ContainerCooling(double temperature, double cargoMass, double containerMass, int height, int depth, double maximumCapacity) : base(cargoMass, containerMass, height, depth, maximumCapacity)
+    public ContainerCooling(double temperature, double containerMass, int height, int depth, double maximumCapacity) : base(containerMass, height, depth, maximumCapacity)
     {
         temperature = temperature;
     }
@@ -18,9 +18,18 @@ public class ContainerCooling : Container, IHazardNotifier
         base.UnloadCargo();
     }
 
-    public override void LoadCargo(LoadProduct cargo)
+    public override void LoadCargo(LoadProduct? cargoToLoad)
     {
-        base.LoadCargo(cargo);
+        if (cargoToLoad == null)
+            return;
+
+        if (cargo != null && cargo.AllowedTemperature < cargoToLoad.AllowedTemperature)
+        {
+            Console.WriteLine("Container does not meet temperature requirement to transport this type of cargo.");
+            return;
+        }
+        
+        base.LoadCargo(cargoToLoad);
     }
 
     public double GetTemperature()
@@ -28,7 +37,7 @@ public class ContainerCooling : Container, IHazardNotifier
         return temperature;
     }
 
-    public void Notify(string serialNumber)
+    public void Notify()
     {
         {
             Console.WriteLine($"Critical Situation with Gas Cargo [{serialNumber}]");

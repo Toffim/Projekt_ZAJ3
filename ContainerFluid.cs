@@ -2,10 +2,9 @@
 
 public class ContainerFluid : Container, IHazardNotifier
 {
-    public ContainerFluid(bool unsafeCargo, double cargoMass, double containerMass, int height, int depth, double maximumCapacity) : base(cargoMass, containerMass, height, depth, maximumCapacity)
-    {
-        unsafeCargo = unsafeCargo;
-    }
+    public ContainerFluid(double containerMass, int height, int depth, double maximumCapacity) :
+        base(containerMass, height, depth, maximumCapacity)
+    {}
 
     protected override void GenerateSerialNumber()
     {
@@ -18,31 +17,26 @@ public class ContainerFluid : Container, IHazardNotifier
         base.UnloadCargo();
     }
 
-    public override void LoadCargo(LoadProduct cargo)
+    public override void LoadCargo(LoadProduct? cargoToLoad)
     {
-        var massToLoad = cargo.TotalMass;
+        if (cargoToLoad == null)
+            return;
 
-        var reasonableCap = IsWithUnsafeCargo() ? maximumCapacity * 0.5 : maximumCapacity * 0.9;
-        if (cargoMass + massToLoad > reasonableCap)
+        // Cargo is null -> initialize it.
+        cargo ??= cargoToLoad;
+        var massToLoad = cargoToLoad.TotalMass;
+
+        var reasonableCap = cargoToLoad.UnsafeCargo ? maximumCapacity * 0.5 : maximumCapacity * 0.9;
+        if (cargo.TotalMass + massToLoad > reasonableCap)
         {
-            Notify(GetSerialNumber());
+            Notify();
         }
 
         base.LoadCargo(cargo);
     }
 
-    public bool IsWithUnsafeCargo()
+    public void Notify()
     {
-        return unsafeCargo;
+        Console.WriteLine($"Critical Situation with Fluid Cargo [{serialNumber}]");
     }
-
-    public void Notify(string serialNumber)
-    {
-        {
-            Console.WriteLine($"Critical Situation with Fluid Cargo [{serialNumber}]");
-        }
-    }
-
-    // Vars
-    private bool unsafeCargo = false;
 }

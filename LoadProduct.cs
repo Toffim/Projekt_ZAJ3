@@ -19,15 +19,23 @@ public class LoadProduct
         get => allowedTemperature;
         set => allowedTemperature = value;
     }
+    
+    public bool UnsafeCargo
+    {
+        get => unsafeCargo;
+        set => unsafeCargo = value;
+    }
 
-    public LoadProduct(string typeName, double totalMass, double allowedTemperature)
+    public LoadProduct(string typeName, double totalMass, double allowedTemperature, bool unsafeCargo)
     {
         this.typeName = typeName;
         this.totalMass = totalMass;
         this.allowedTemperature = allowedTemperature;
+        this.unsafeCargo = unsafeCargo;
     }
 
     private string typeName;
     private double totalMass;
+    private bool unsafeCargo;
     private double allowedTemperature;
 }

@@ -2,7 +2,7 @@
 
 public class ContainerGas : Container, IHazardNotifier
 {
-    public ContainerGas(double airPressure, double cargoMass, double containerMass, int height, int depth, double maximumCapacity) : base(cargoMass, containerMass, height, depth, maximumCapacity)
+    public ContainerGas(double airPressure, double containerMass, int height, int depth, double maximumCapacity) : base(containerMass, height, depth, maximumCapacity)
     {
         airPressure = airPressure;
     }
@@ -15,12 +15,14 @@ public class ContainerGas : Container, IHazardNotifier
 
     public override void UnloadCargo()
     {
-        cargoMass = (0.05 * cargoMass);
+        if (cargo == null)
+            return;
+        cargo.TotalMass = (0.05 * cargo.TotalMass);
     }
 
-    public override void LoadCargo(LoadProduct cargo)
+    public override void LoadCargo(LoadProduct? cargoToLoad)
     {
-        base.LoadCargo(cargo);
+        base.LoadCargo(cargoToLoad);
     }
 
     public double GetAirPressure()
@@ -28,11 +30,9 @@ public class ContainerGas : Container, IHazardNotifier
         return airPressure;
     }
 
-    public void Notify(string serialNumber)
+    public void Notify()
     {
-        {
-            Console.WriteLine($"Critical Situation with Gas Cargo [{serialNumber}]");
-        }
+        Console.WriteLine($"Critical Situation with Gas Cargo [{serialNumber}]");
     }
 
     // Vars
