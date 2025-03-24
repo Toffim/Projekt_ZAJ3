@@ -57,14 +57,8 @@ public class ContainerShip
         return Containers.Sum(c => c.GetCargoMass()) / 1000; // kg into tons
     }
 
-    public void DisplayShipInfo()
+    public override string ToString()
     {
-        // $ allows to put vars without concatenation, quite cool
-        Console.WriteLine($"Container Ship Info:");
-        Console.WriteLine($"-> Max Speed: {MaxSpeed} in knots");
-        Console.WriteLine($"-> Max Containers: {MaxContainers}");
-        Console.WriteLine($"-> Max Weight: {MaxWeightTons} tons");
-        Console.WriteLine($"-> Current Containers: {Containers.Count}");
-        Console.WriteLine($"-> Current Weight: {GetTotalCargoWeight()} tons");
+        return ($"Statek {shipNumber} (speed={MaxSpeed}, maxContainers={MaxContainers}, maxWeight={MaxWeightTons})");
     }
 }

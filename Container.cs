@@ -61,6 +61,11 @@ public class Container
     {
         return serialNumber;
     }
+    
+    public override string ToString()
+    {
+        return ($"Kontener {GetSerialNumber()} (maxCap={maximumCapacity}, containerMass={containerMass}, height={height}, depth={depth})");
+    }
 // Vars
     public static int lastCargoIndex = 1;
     protected string serialNumber;
